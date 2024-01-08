@@ -1,5 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Factory;
+using WebApi.Generic;
+using WebApi.Generic.Bike;
+using WebApi.Generic.Framewok.Dto;
 
 namespace WebApi.Controllers
 {
@@ -29,6 +32,53 @@ namespace WebApi.Controllers
         {
             var sportBike = new SportBike();
             var createdBikes = sportBike.Build();
+
+
+            var bike = new BikeComponent();
+            bike.GenerateComponent(new BikeDto()
+            {
+                Id = 10,
+                Type = nameof(VehicleTypes.Bike),
+                Components = new List<ComponentDto>()
+                {
+                    new ComponentDto()
+                    {
+                        Id = 1,
+                        Name = nameof(BikeComponentTypes.Seat),
+                        NumberOfUnitsNeed = 1
+                    },
+                    new ComponentDto()
+                    {
+                        Id = 1,
+                        Name = nameof(BikeComponentTypes.Wheel),
+                        NumberOfUnitsNeed = 2,
+                        HasItems = true,
+                        Items = new List<KeyValuePair<string, int>>
+                        {
+                            new KeyValuePair<string, int>("Frames", 60),
+                            new KeyValuePair<string, int>("Tubes", 35)
+                        }
+                    }
+                }
+            });
+            var createdBiks2 = bike.Build(new List<StockDto>()
+            {
+                new StockDto()
+                {
+                    Name = nameof(BikeComponentTypes.Seat),
+                    Quantity = 40
+                },
+                new StockDto()
+                {
+                    Name = "Frames",
+                    Quantity = 40
+                },
+                new StockDto()
+                {
+                    Name = "Tubes",
+                    Quantity = 20
+                },
+            });
 
             return createdBikes;
         }
