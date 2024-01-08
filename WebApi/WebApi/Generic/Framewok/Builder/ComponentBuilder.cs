@@ -104,7 +104,10 @@ public abstract class ComponentBuilder : IGenericComponent<VehicleDto>
             }
         }
 
-        var createdVehicles = nestedComponents.Concat(simpleComponents).Min();
+        var nestedMinumumCount = nestedComponents.Min();
+        var simpleMinimumCount = simpleComponents.Min();
+
+        var createdVehicles = new List<int> { nestedMinumumCount, simpleMinimumCount }.Min();
 
         return createdVehicles;
         //LoopEnd:
